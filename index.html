@@ -34,15 +34,35 @@
             e.target.reset();
         }
         function showUserOnScreen(obj){
-            let parentElement = document.getElementById('listofusers');
-            parentElement.innerHTML = parentElement.innerHTML + `<li>${obj.name} - ${obj.email} - ${obj.phone}  <button type="button" onclick="deleteUser('${obj.email}')">Delete</button></li>`;
-        }
+    let parentElement = document.getElementById('listofusers');
+    parentElement.innerHTML += `<li data-email="${obj.email}">${obj.name} - ${obj.email} - ${obj.phone}  <button type="button" onclick="deleteUser('${obj.email}')">Delete</button> <button type="button" onclick="editUser('${obj.email}')">Edit</button></li>`;
+}
+
 
         function deleteUser(email){
             let childElem = document.querySelector('li')
             childElem.remove();
             localStorage.removeItem(email)
         }
+
+        function editUser(email){
+    let obj = JSON.parse(localStorage.getItem(email));
+    let name = obj.name;
+    let phone = obj.phone;
+    
+    // populate form fields with user's information
+    document.querySelector('input[name="username"]').value = name;
+    document.querySelector('input[name="emailId"]').value = email;
+    document.querySelector('input[name="phonenumber"]').value = phone;
+
+    // remove the corresponding li element from UI
+    let liElem = document.querySelector(`li[data-email="${email}"]`);
+    liElem.remove();
+
+    // remove the corresponding item from local storage
+    localStorage.removeItem(email);
+}
+
     </script>
 </body>
 </html>
