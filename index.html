@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="saveLocalStorage(event)">
+        <label>Name</label>
+        <input type="text" name="username" required>
+        <label>EmailId</label>
+        <input type="text" name="emailId" required>
+        <label>Phone</label>
+        <input type="text" name="phonenumber" required>
+        <button type="submit">Submit</button>
+        <ul id="listofusers"></ul>
+    </form>
+    <script>
+        function saveLocalStorage(e){
+            e.preventDefault();
+            const name = e.target.username.value;
+            const email = e.target.emailId.value;
+            const phone = e.target.phonenumber.value;
+
+            const obj = {
+                name: name,
+                email: email,
+                phone: phone
+            }
+            localStorage.setItem(email, JSON.stringify(obj));
+            showUserOnScreen(obj);
+            e.target.reset();
+        }
+        function showUserOnScreen(obj){
+            let parentElement = document.getElementById('listofusers');
+            parentElement.innerHTML = parentElement.innerHTML + `<li>${obj.name} - ${obj.email} - ${obj.phone}  <button type="button" onclick="deleteUser('${obj.email}')">Delete</button></li>`;
+        }
+
+        function deleteUser(email){
+            let childElem = document.querySelector('li')
+            childElem.remove();
+            localStorage.removeItem(email)
+        }
+    </script>
+</body>
+</html>
