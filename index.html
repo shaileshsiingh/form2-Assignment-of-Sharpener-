@@ -43,6 +43,22 @@
             // showUserOnScreen(obj);
             e.target.reset();
         }
+
+        window.addEventListener("DOMContentLoaded",()=>{
+            axios.get('https://crudcrud.com/api/ac5eba735cab484cb4acb8fa80ed6a35/appointmentPost')
+  .then((response) => {
+    for(var i = 0; i<=response.data.length; i++){
+        showUserOnScreen(response.data[i])
+    }
+    console.log(response);
+  })
+  .catch((err) => {
+   
+    console.error(err);
+  });
+
+        })
+
         function showUserOnScreen(obj){
     let parentElement = document.getElementById('listofusers');
     parentElement.innerHTML += `<li data-email="${obj.email}">${obj.name} - ${obj.email} - ${obj.phone}  <button type="button" onclick="deleteUser('${obj.email}')">Delete</button> <button type="button" onclick="editUser('${obj.email}')">Edit</button></li>`;
