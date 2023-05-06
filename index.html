@@ -32,7 +32,7 @@
             }
             // localStorage.setItem(email, JSON.stringify(obj));
 
-            axios.post("https://crudcrud.com/api/ac5eba735cab484cb4acb8fa80ed6a35/appointmentPost", obj)
+            axios.post("https://crudcrud.com/api/bfab4fb2dd33471989be52ddee252e51/appointmentPost", obj)
             .then((response) =>{
                 showUserOnScreen(response.data)
                 console.log(response);
@@ -45,7 +45,7 @@
         }
 
         window.addEventListener("DOMContentLoaded",()=>{
-            axios.get('https://crudcrud.com/api/ac5eba735cab484cb4acb8fa80ed6a35/appointmentPost')
+            axios.get('https://crudcrud.com/api/bfab4fb2dd33471989be52ddee252e51/appointmentPost')
   .then((response) => {
     for(var i = 0; i<=response.data.length; i++){
         showUserOnScreen(response.data[i])
@@ -61,15 +61,23 @@
 
         function showUserOnScreen(obj){
     let parentElement = document.getElementById('listofusers');
-    parentElement.innerHTML += `<li data-email="${obj.email}">${obj.name} - ${obj.email} - ${obj.phone}  <button type="button" onclick="deleteUser('${obj.email}')">Delete</button> <button type="button" onclick="editUser('${obj.email}')">Edit</button></li>`;
+    parentElement.innerHTML += `<li data-email="${obj.email}">${obj.name} - ${obj.email} - ${obj.phone}  <button type="button" onclick="deleteUser('${obj._id}')">Delete</button> <button type="button" onclick="editUser('${obj.email}')">Edit</button></li>`;
 }
 
 
-        function deleteUser(email){
-            let childElem = document.querySelector('li')
-            childElem.remove();
-            localStorage.removeItem(email)
-        }
+function deleteUser(_id) {
+  axios.delete(`https://crudcrud.com/api/bfab4fb2dd33471989be52ddee252e51/appointmentPost/${_id}`)
+    .then((response) => {
+      let liElem = document.querySelector(`li[data-id="${_id}"]`);
+      liElem.remove();
+      console.log(response);
+    })
+    .catch((err) => {
+        document.body.innerHTML = document.body.innerHTML + "<h4>something went wrong</h4>"
+
+      console.log(err);
+    });
+}
 
         function editUser(email){
     let obj = JSON.parse(localStorage.getItem(email));
@@ -82,11 +90,11 @@
     document.querySelector('input[name="phonenumber"]').value = phone;
 
     // remove the corresponding li element from UI
-    let liElem = document.querySelector(`li[data-email="${email}"]`);
-    liElem.remove();
+    // let liElem = document.querySelector(`li[data-email="${email}"]`);
+    // liElem.remove();
 
     // remove the corresponding item from local storage
-    localStorage.removeItem(email);
+    // localStorage.removeItem(email);
 }
 
     </script>
